@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ur_script_compliance</name>
+  <version>0.0.0</version>
+  <description>
+      Compliant motion for UR robots.
+  </description>
+
+  <author>Andy Zelenak</author>
+  <author email="andyz@utexas.edu">Andy Zelenak</author>
+  <maintainer email="andyz@utexas.edu">Andy Zelenak</maintainer>
+
+  <license>See license.txt</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+</package>
