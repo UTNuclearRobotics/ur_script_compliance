@@ -2,36 +2,6 @@
 #include <ur_script_compliance.h>
 
 
-int main(int argc, char** argv) {
-  ros::init(argc, argv, "ur_script_compliance");
-  ros::start();
-
-  both_arms_up_();
-
-  ros::shutdown();
-  return 0;
-}
-
-
-// Push up with both arms
-int both_arms_up_() {
-  // right arm compliance object
-  ur_script_compliance right("/right_ur5_controller/right_ur5_URScript");
-
-  // Put the robot in force mode
-  right.enable_force_mode_();
-
-  // Begin motion
-  std::vector<float> joints { -1.017, -1.556, -1.142, -0.4117, 1.099, 0.7076};
-  right.move_to_joints_( joints );
-
-  // Back into normal mode
-  //right.end_force_mode_();
-
-  return 0;
-}
-
-
 // Constructor for compliance of one arm
 ur_script_compliance::ur_script_compliance (std::string ur_rostopic) :
   node_()
@@ -41,7 +11,14 @@ ur_script_compliance::ur_script_compliance (std::string ur_rostopic) :
 }
 
 
-int ur_script_compliance::enable_force_mode_()
+// Destructor
+ur_script_compliance::~ur_script_compliance(void)
+{
+  end_force_mode_();
+}
+
+
+int ur_script_compliance::enable_force_mode_( std::vector<float> task_frame, std::vector<int> selection_vector, std::vector<int> target_wrench, int type, std::vector<float> limits )
 {
 
   // URScript force_mode command:
@@ -50,11 +27,11 @@ int ur_script_compliance::enable_force_mode_()
     "[%d, %d, %d, %d, %d, %d],"
     "%d,"
     "[%1.5f, %1.5f, %1.5f, %1.5f, %1.5f, %1.5f])\n", 
-    0., 0., 0., 0., 0., 0.,  //task frame. Note the leading 'p' for 'pose'
-    1, 1, 1, 1, 1, 1,  // selection vector -- does each axis act like compliance or admittance?
-    0, 0, 0, 0, 0, 0,  // target wrench
-    1, // type
-    0.8, 0.8, 0.8, 1.571, 1.571, 1.571  // adjustment limits
+    task_frame.at(0), task_frame.at(1), task_frame.at(2), task_frame.at(3), task_frame.at(4), task_frame.at(5),  //task frame. Note the leading 'p' for 'pose'
+    selection_vector.at(0), selection_vector.at(1), selection_vector.at(2), selection_vector.at(3), selection_vector.at(4), selection_vector.at(5),  // selection vector -- does each axis act like compliance or admittance?
+    target_wrench.at(0), target_wrench.at(1), target_wrench.at(2), target_wrench.at(3), target_wrench.at(4), target_wrench.at(5),  // target wrench
+    type, // type of force_frame transform
+    limits.at(0), limits.at(1), limits.at(2), limits.at(3), limits.at(4), limits.at(5)  // Displacement limits
   ); 
 
   publish_command_();

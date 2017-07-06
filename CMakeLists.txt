@@ -20,8 +20,10 @@ catkin_package(
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(ur_script_compliance src/ur_script_compliance.cpp)
+add_library(ur_script_compliance src/ur_script_compliance.cpp)
 add_dependencies(ur_script_compliance ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
 target_link_libraries(ur_script_compliance ${catkin_LIBRARIES} )
 
-
+add_executable(both_arms_up src/both_arms_up.cpp)
+add_dependencies(both_arms_up ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(both_arms_up ${catkin_LIBRARIES} ur_script_compliance )

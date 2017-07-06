@@ -9,7 +9,8 @@ class ur_script_compliance
   // Note: most ur_script arguments are floats
   public:
     ur_script_compliance (std::string ur_rostopic);
-    int enable_force_mode_();
+    ~ur_script_compliance();
+    int enable_force_mode_( std::vector<float> task_frame, std::vector<int> selection_vector, std::vector<int> target_wrench, int type, std::vector<float> limits );
     int end_force_mode_();
     int set_digital_output_();  // Useful to test the connection with robot. See the pendant I/O
     int publish_command_();
@@ -24,12 +25,13 @@ class ur_script_compliance
 
     // Kind of flaky. I haven't figured out what the units are
     // or even what frame it's in.
-    int move_to_pose_(std::vector<float> pose);
+    int move_to_pose_(std::vector<float> pose);\
+    
+    constexpr static float control_period_ = 0.008;
 
   private:
     ros::NodeHandle node_;
     ros::Publisher ur_topic_pub_;
     char cmd_ [400];
     std_msgs::String ur_script_string_;
-    float control_period_ = 0.008;
 };
