@@ -24,6 +24,10 @@ add_library(ur_script_compliance src/ur_script_compliance.cpp)
 add_dependencies(ur_script_compliance ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
 target_link_libraries(ur_script_compliance ${catkin_LIBRARIES} )
 
-add_executable(both_arms_up src/both_arms_up.cpp)
-add_dependencies(both_arms_up ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
-target_link_libraries(both_arms_up ${catkin_LIBRARIES} ur_script_compliance )
+add_executable(enable_compliance src/enable_compliance.cpp)
+add_dependencies(enable_compliance ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(enable_compliance ${catkin_LIBRARIES} ur_script_compliance )
+
+add_executable(set_digital_output src/set_digital_output.cpp)
+add_dependencies(set_digital_output ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(set_digital_output ${catkin_LIBRARIES} ur_script_compliance )

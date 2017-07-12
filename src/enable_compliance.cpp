@@ -4,25 +4,21 @@
 #include <ur_script_compliance.h>
 #include <vector>
 
+int enable_force_mode();
+
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "ur_script_compliance");
 
-  both_arms_up_();
+  enable_force_mode();
 
   ros::shutdown();
   return 0;
 }
 
 
-// Push up with both arms
-int both_arms_up_() {
-
-  // Move to starting poses
-  ros::NodeHandle n;
-  ros::ServiceClient client = n.serviceClient<std_srvs::Empty> ("/arm_services/move_to_compliance_demo");
-  std_srvs::Empty srv;
-  client.call(srv);
+// Enable force mode
+int enable_force_mode() {
 
   // arm compliance objects
   ur_script_compliance right("/right_ur5_controller/right_ur5_URScript");

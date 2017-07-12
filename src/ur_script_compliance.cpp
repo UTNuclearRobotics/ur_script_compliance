@@ -84,6 +84,17 @@ int ur_script_compliance::move_to_pose_(std::vector<float> pose)
 }
 
 
+// Set a digital output. Useful for testing the connection.
+// Check the pendant's IO monitor to see if it worked.
+int ur_script_compliance::set_digital_output_( int output_num )
+{
+    sprintf(cmd_, "set_digital_out(%d,True)\n", output_num );
+    publish_command_();
+
+    return 0;
+}
+
+
 int ur_script_compliance::publish_command_()
 {
   ur_script_string_.data = cmd_;  // Convert from char array to ROS string
@@ -92,15 +103,4 @@ int ur_script_compliance::publish_command_()
   ros::Duration(0.1).sleep();
 
   return 0;
-}
-
-
-// Set a digital output. Useful for testing the connection.
-// Check the pendant's IO monitor to see if it worked.
-int ur_script_compliance::set_digital_output_()
-{
-    sprintf(cmd_, "set_digital_out(2,True)\n");
-    publish_command_();
-
-    return 0;
 }

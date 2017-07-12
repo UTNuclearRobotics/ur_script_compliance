@@ -2,17 +2,19 @@
 #include <std_msgs/String.h>
 #include <vector>
 
-int both_arms_up_();
-
 class ur_script_compliance
 {
-  // Note: most ur_script arguments are floats
+  // Note: most ur_script arguments are floats or ints
   public:
+    // Constructor: specify the robot's UR topic
     ur_script_compliance (std::string ur_rostopic);
+
+    // Destructor automatically ends force mode
     ~ur_script_compliance();
+
     int enable_force_mode_( std::vector<float> task_frame, std::vector<int> selection_vector, std::vector<int> target_wrench, int type, std::vector<float> limits );
     int end_force_mode_();
-    int set_digital_output_();  // Useful to test the connection with robot. See the pendant I/O
+    int set_digital_output_( int output_num );  // Useful to test the connection with robot. See the pendant I/O
     int publish_command_();
 
     // Untis in rad
@@ -25,7 +27,7 @@ class ur_script_compliance
 
     // Kind of flaky. I haven't figured out what the units are
     // or even what frame it's in.
-    int move_to_pose_(std::vector<float> pose);\
+    int move_to_pose_(std::vector<float> pose);
     
     constexpr static float control_period_ = 0.008;
 
