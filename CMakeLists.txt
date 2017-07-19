@@ -1,17 +1,18 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ur_script_compliance)
 
-
 add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
 )
 
+# What should we make available to other packages that depend on this one?
 catkin_package(
-  CATKIN_DEPENDS
-    roscpp
+  INCLUDE_DIRS include
+  CATKIN_DEPENDS roscpp
   DEPENDS
+  LIBRARIES ur_script_compliance
 )
 
 ###########

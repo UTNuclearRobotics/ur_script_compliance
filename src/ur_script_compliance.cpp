@@ -1,23 +1,6 @@
 
 #include <ur_script_compliance.h>
 
-
-// Constructor for compliance of one arm
-ur_script_compliance::ur_script_compliance (std::string ur_rostopic) :
-  node_()
-{
-  ur_topic_pub_ = node_.advertise<std_msgs::String>(ur_rostopic, 1);
-  ros::Duration(0.5).sleep();
-}
-
-
-// Destructor
-ur_script_compliance::~ur_script_compliance(void)
-{
-  end_force_mode_();
-}
-
-
 int ur_script_compliance::enable_force_mode_( std::vector<float> task_frame, std::vector<int> selection_vector, std::vector<int> target_wrench, int type, std::vector<float> limits )
 {
 
@@ -103,4 +86,18 @@ int ur_script_compliance::publish_command_()
   ros::Duration(0.1).sleep();
 
   return 0;
+}
+
+// Constructor
+ur_script_compliance::ur_script_compliance (std::string ur_rostopic) :
+  node_()
+{
+  ur_topic_pub_ = node_.advertise<std_msgs::String>(ur_rostopic, 1);
+  ros::Duration(0.5).sleep();
+}
+
+// Destructor -- it ends force_mode
+ur_script_compliance::~ur_script_compliance(void)
+{
+  ur_script_compliance::end_force_mode_();
 }
