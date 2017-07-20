@@ -1,3 +1,7 @@
+
+#ifndef UR_SCRIPT_COMPLIANCE_H
+#define UR_SCRIPT_COMPLIANCE_H
+
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <vector>
@@ -41,3 +45,5 @@ class ur_script_compliance
     char cmd_ [400];
     std_msgs::String ur_script_string_;
 };
+
+#endif
