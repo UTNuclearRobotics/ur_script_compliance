@@ -1,2 +1,2 @@
-# move_base_to_manip
-Move the robot base until a desired end-effector pose can be reached.
+# ur_script_compliance
+A C++ interface for the built-in UR compliance.
