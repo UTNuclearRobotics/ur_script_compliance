@@ -1,11 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////////
-//      Title     : ur_script_compliance
+//      Title     : ur_script_interface
 //      Project   :
 //      Created   : 7/3/2017
 //      Author    : Andy Zelenak
 //      Platforms : Ubuntu 64-bit
 //      Copyright : Copyright© The University of Texas at Austin, 2014-2017. All rights reserved.
-//                 
+//
 //	    All files within this directory are subject to the following, unless an alternative
 //	    license is explicitly included within the text of each file.
 //
@@ -26,6 +26,6 @@
 //          including but not limited to those resulting from defects in software
 //          and/or documentation, or loss or inaccuracy of data of any kind.
 //
-//      Purpose : Compliant motion via URScript.
+//      Purpose : A C++ interface for Universal Robots.
 //
 ///////////////////////////////////////////////////////////////////////////////

@@ -1,7 +1,7 @@
 
-#include <ur_script_compliance.h>
+#include <ur_script_interface.h>
 
-int ur_script_compliance::enable_force_mode_( std::vector<float> task_frame, std::vector<int> selection_vector, std::vector<int> target_wrench, int type, std::vector<float> limits )
+int ur_script_interface::enable_force_mode_( std::vector<float> task_frame, std::vector<int> selection_vector, std::vector<int> target_wrench, int type, std::vector<float> limits )
 {
 
   // URScript force_mode command:
@@ -23,7 +23,7 @@ int ur_script_compliance::enable_force_mode_( std::vector<float> task_frame, std
 }
 
 
-int ur_script_compliance::end_force_mode_()
+int ur_script_interface::end_force_mode_()
 {
   sprintf(cmd_, "end_force_mode()\n");
   publish_command_();
@@ -33,7 +33,7 @@ int ur_script_compliance::end_force_mode_()
 
 
 // Angles in rad
-int ur_script_compliance::move_to_joints_(std::vector<float> joints)
+int ur_script_interface::move_to_joints_(std::vector<float> joints)
 {
 	sprintf(cmd_, "movej([%1.5f, %1.5f, %1.5f, %1.5f, %1.5f, %1.5f], a=0.1, v=0.1)\n", joints.at(0), joints.at(1), joints.at(2), joints.at(3), joints.at(4), joints.at(5) );
     publish_command_();
@@ -44,7 +44,7 @@ int ur_script_compliance::move_to_joints_(std::vector<float> joints)
 
 // This speed is in the UR "Base" frame.
 // xyz vector component of 1 => 1 cm/s in that direction
-int ur_script_compliance::linear_speed_(std::vector<float> speed)
+int ur_script_interface::linear_speed_(std::vector<float> speed)
 {
   sprintf(cmd_, "speedl([%1.5f, %1.5f, %1.5f, %1.5f, %1.5f, %1.5f], a=0.1, v=0.01)\n", speed.at(0), speed.at(1), speed.at(2), speed.at(3), speed.at(4), speed.at(5) );
 
@@ -58,7 +58,7 @@ int ur_script_compliance::linear_speed_(std::vector<float> speed)
 }
 
 
-int ur_script_compliance::move_to_pose_(std::vector<float> pose)
+int ur_script_interface::move_to_pose_(std::vector<float> pose)
 {
   sprintf(cmd_, "movel(p[%1.5f, %1.5f, %1.5f, %1.5f, %1.5f, %1.5f], a=0.1, v=0.01)\n", pose.at(0), pose.at(1), pose.at(2), pose.at(3), pose.at(4), pose.at(5) );
   publish_command_();
@@ -69,7 +69,7 @@ int ur_script_compliance::move_to_pose_(std::vector<float> pose)
 
 // Set a digital output. Useful for testing the connection.
 // Check the pendant's IO monitor to see if it worked.
-int ur_script_compliance::set_digital_output_( int output_num )
+int ur_script_interface::set_digital_output_( int output_num )
 {
     sprintf(cmd_, "set_digital_out(%d,True)\n", output_num );
     publish_command_();
@@ -78,7 +78,7 @@ int ur_script_compliance::set_digital_output_( int output_num )
 }
 
 
-int ur_script_compliance::publish_command_()
+int ur_script_interface::publish_command_()
 {
   ur_script_string_.data = cmd_;  // Convert from char array to ROS string
   //ROS_INFO_STREAM( ur_script_string_.data );
@@ -89,7 +89,7 @@ int ur_script_compliance::publish_command_()
 }
 
 // Constructor
-ur_script_compliance::ur_script_compliance (std::string ur_rostopic) :
+ur_script_interface::ur_script_interface (std::string ur_rostopic) :
   node_()
 {
   ur_topic_pub_ = node_.advertise<std_msgs::String>(ur_rostopic, 1);
@@ -97,7 +97,7 @@ ur_script_compliance::ur_script_compliance (std::string ur_rostopic) :
 }
 
 // Destructor -- it ends force_mode
-ur_script_compliance::~ur_script_compliance(void)
+ur_script_interface::~ur_script_interface(void)
 {
-  ur_script_compliance::end_force_mode_();
+  ur_script_interface::end_force_mode_();
 }

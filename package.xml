@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ur_script_compliance</name>
+  <name>ur_script_interface</name>
   <version>0.0.0</version>
   <description>
-      Compliant motion for UR robots.
+      A C++ interface for Universal Robots.
   </description>
 
   <author>Andy Zelenak</author>
   <author email="andyz@utexas.edu">Andy Zelenak</author>
   <maintainer email="andyz@utexas.edu">Andy Zelenak</maintainer>
 
-  <license>See license.txt</license>
+  <license>See LICENSE.md</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 

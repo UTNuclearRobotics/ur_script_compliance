@@ -1,21 +1,21 @@
 
-#ifndef UR_SCRIPT_COMPLIANCE_H
-#define UR_SCRIPT_COMPLIANCE_H
+#ifndef UR_SCRIPT_INTERFACE_H
+#define UR_SCRIPT_INTERFACE_H
 
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 #include <vector>
 
-class ur_script_compliance
+class ur_script_interface
 {
   // Note: most ur_script arguments are floats or ints
   public:
     // Constructor for compliance of one arm.
     // Specify the UR rostopic
-    ur_script_compliance (std::string ur_rostopic);
+    ur_script_interface (std::string ur_rostopic);
 
     // Destructor automatically ends force mode
-    ~ur_script_compliance(void);
+    ~ur_script_interface(void);
 
     int enable_force_mode_( std::vector<float> task_frame, std::vector<int> selection_vector, std::vector<int> target_wrench, int type, std::vector<float> limits );
 

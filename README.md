@@ -1,2 +1,2 @@
-# ur_script_compliance
-A C++ interface for the built-in UR compliance.
+# ur_script_interface
+A C++ interface for Universal Robots.
