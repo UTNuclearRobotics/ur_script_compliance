@@ -1,6 +1,20 @@
 
 #include <ur_script_interface.h>
 
+// Constructor
+ur_script_interface::ur_script_interface (std::string ur_rostopic) :
+  node_()
+{
+  ur_topic_pub_ = node_.advertise<std_msgs::String>(ur_rostopic, 1);
+  ros::Duration(0.5).sleep();
+}
+
+// Destructor -- it ends force_mode
+ur_script_interface::~ur_script_interface(void)
+{
+  ur_script_interface::end_force_mode_();
+}
+
 int ur_script_interface::enable_force_mode_( std::vector<float> task_frame, std::vector<int> selection_vector, std::vector<int> target_wrench, int type, std::vector<float> limits )
 {
 
@@ -32,13 +46,39 @@ int ur_script_interface::end_force_mode_()
 }
 
 
-// Angles in rad
-int ur_script_interface::move_to_joints_(std::vector<float> joints)
+// Listen to ROS /joy commands and jog joints
+int ur_script_interface::jog_joints_(std::string incoming_cmd_topic)
 {
-	sprintf(cmd_, "movej([%1.5f, %1.5f, %1.5f, %1.5f, %1.5f, %1.5f], a=0.1, v=0.1)\n", joints.at(0), joints.at(1), joints.at(2), joints.at(3), joints.at(4), joints.at(5) );
-    publish_command_();
+  // Subscribe to /joy topic
+  ros::Subscriber sub_pose_cmd = node_.subscribe(incoming_cmd_topic, 1,  &ur_script_interface::joystick_cb_, this);
 
-	return 0;
+  // LOOP:
+  // Can be interrupted by the action server.
+  while ( ros::ok() )
+  {
+    // Convert joy commands to Cartesian speeds
+
+    // Publish the speed cmd to the robot
+
+    ros::Duration(control_period_).sleep();
+  }
+
+  return 0;
+}
+
+
+// Process incoming joystick commands, e.g. from SpaceMouse
+void ur_script_interface::joystick_cb_(const sensor_msgs::Joy::ConstPtr& msg)
+{
+  position_.x = msg->axes[0];
+  position_.y = msg->axes[1];
+  position_.z = msg->axes[2];
+
+  orientation_.x = msg->axes[3];  // roll
+  orientation_.y = msg->axes[4];  // pitch
+  orientation_.z = msg->axes[5];  // yaw
+
+  return;
 }
 
 
@@ -58,10 +98,30 @@ int ur_script_interface::linear_speed_(std::vector<float> speed)
 }
 
 
+// Angles in rad
+int ur_script_interface::move_to_joints_(std::vector<float> joints)
+{
+	sprintf(cmd_, "movej([%1.5f, %1.5f, %1.5f, %1.5f, %1.5f, %1.5f], a=0.1, v=0.1)\n", joints.at(0), joints.at(1), joints.at(2), joints.at(3), joints.at(4), joints.at(5) );
+    publish_command_();
+
+	return 0;
+}
+
+
 int ur_script_interface::move_to_pose_(std::vector<float> pose)
 {
   sprintf(cmd_, "movel(p[%1.5f, %1.5f, %1.5f, %1.5f, %1.5f, %1.5f], a=0.1, v=0.01)\n", pose.at(0), pose.at(1), pose.at(2), pose.at(3), pose.at(4), pose.at(5) );
   publish_command_();
+
+  return 0;
+}
+
+
+int ur_script_interface::publish_command_()
+{
+  ur_script_string_.data = cmd_;  // Convert from char array to ROS string
+  //ROS_INFO_STREAM( ur_script_string_.data );
+  ur_topic_pub_.publish( ur_script_string_ );
 
   return 0;
 }
@@ -75,29 +135,4 @@ int ur_script_interface::set_digital_output_( int output_num )
     publish_command_();
 
     return 0;
-}
-
-
-int ur_script_interface::publish_command_()
-{
-  ur_script_string_.data = cmd_;  // Convert from char array to ROS string
-  //ROS_INFO_STREAM( ur_script_string_.data );
-  ur_topic_pub_.publish( ur_script_string_ );
-  ros::Duration(0.1).sleep();
-
-  return 0;
-}
-
-// Constructor
-ur_script_interface::ur_script_interface (std::string ur_rostopic) :
-  node_()
-{
-  ur_topic_pub_ = node_.advertise<std_msgs::String>(ur_rostopic, 1);
-  ros::Duration(0.5).sleep();
-}
-
-// Destructor -- it ends force_mode
-ur_script_interface::~ur_script_interface(void)
-{
-  ur_script_interface::end_force_mode_();
 }
