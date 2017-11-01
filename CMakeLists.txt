@@ -25,9 +25,9 @@ add_library(ur_script_interface src/ur_script_interface.cpp)
 add_dependencies(ur_script_interface ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
 target_link_libraries(ur_script_interface ${catkin_LIBRARIES} )
 
-#add_executable(enable_compliance src/enable_compliance.cpp)
-#add_dependencies(enable_compliance ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
-#target_link_libraries(enable_compliance ${catkin_LIBRARIES} ur_script_interface )
+add_executable(enable_compliance src/enable_compliance.cpp)
+add_dependencies(enable_compliance ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+target_link_libraries(enable_compliance ${catkin_LIBRARIES} ur_script_interface )
 
 #add_executable(set_digital_output src/set_digital_output.cpp)
 #add_dependencies(set_digital_output ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
